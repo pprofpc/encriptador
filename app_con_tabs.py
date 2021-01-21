@@ -11,6 +11,8 @@ window = Tk()
 
 password = StringVar()
 mostrarDato = StringVar()
+estadoArchivo = StringVar()
+estadoArchivo.set("Cargar archivo")
 
 class Archivo:
     nombre = ""
@@ -36,6 +38,13 @@ class Archivo:
         """Devuelve ruta completa y nombre de archivo"""
         return self.completo
 
+    def getOk(self):
+        """Devuelve si el archivo existe"""
+        if (len(self.getCompleto())>0):
+            return TRUE
+        else:
+            return FALSE
+
 archivoLeer = Archivo()
 
 def setDato():
@@ -44,9 +53,10 @@ def setDato():
 def abrir_archivo():
     ruta_app = os.path.abspath("./")
     archivo_abierto = filedialog.askopenfile(initialdir=ruta_app, title= "Seleccionar archivo",filetypes = (("txt","*.txt"),("all files","*.*")))
-    print(archivo_abierto.name)
     archivoLeer.setCompleto(archivo_abierto.name)
-    print(archivoLeer.getCompleto())
+    if archivoLeer.getOk():
+        estadoArchivo.set("Archivo Cargado")
+
 
 
 window.title("Encriptador")
@@ -67,6 +77,9 @@ lblSeparador.grid(column=0, row=0)
 
 btnBuscar = Button(tab1, text="Buscar archivo a encriptar", command=abrir_archivo)
 btnBuscar.grid(row=1, columnspan=2, column=0, sticky=E)
+
+lblArchivoOk = Label( tab1, textvariable=estadoArchivo )
+lblArchivoOk.grid(row=1, column=2)
 
 lblPassword = Label(tab1, text="Contraseña: ")
 lblPassword.grid(row=3, column=0)
