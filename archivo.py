@@ -21,6 +21,7 @@ class Archivo:
         return self.nombre
 
     def setCompleto(self, completo):
+        """Seteo la ruta completa y nombre de archivo"""
         self.completo = completo
 
     def getCompleto(self):
@@ -35,6 +36,7 @@ class Archivo:
             return False
 
     def setDataEncriptada(self, clave):
+        """Encripta el archivo con la clave introducida"""
         original = open(self.getCompleto(), 'r')
         count = 0
         ln = ""
@@ -44,4 +46,9 @@ class Archivo:
         original.close()
         self.__data = ln
         self.__dataEncriptada = integration(clave, self.__data)
-        print("Archivo codificado: ", self.__dataEncriptada)
+        
+    def isEncrypted(self):
+        if len(self.__dataEncriptada)>0:
+            return True
+        else:
+            return False
