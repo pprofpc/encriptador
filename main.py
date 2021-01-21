@@ -1,5 +1,5 @@
 from tkinter import Tk
-from tkinter import StringVar, Label, Button, Entry, E
+from tkinter import StringVar, Label, Button, Entry, E, DISABLED
 from tkinter import messagebox as Messagebox
 from archivo import Archivo
 
@@ -40,6 +40,7 @@ def abrir_archivo():
     archivoLeer.setCompleto(archivo_abierto.name)
     if archivoLeer.getOk():
         estadoArchivo.set("Archivo Cargado")
+        btnAceptar['state'] = 'normal'
         
 
 
@@ -77,7 +78,7 @@ lblBanderaPassword.grid(row=4, column=0, columnspan=2)
 
 #Botón Encriptar
 
-btnAceptar = Button(tab1, text="Encriptar", command=setDato)
+btnAceptar = Button(tab1, text="Encriptar", command=setDato, state=DISABLED)
 btnAceptar.grid(row=5, column=1, sticky=E)
 
 
