@@ -35,7 +35,7 @@ def integration(clave, Cadena):
     count = 0
     numCifrados = 0
     vectorCifrado = []
-    print(nuevaClaveVector, "Tamaño ", len(nuevaClaveVector))
+    #print(nuevaClaveVector, "Tamaño ", len(nuevaClaveVector))
     for num in nuevaClaveVector:
         # print(num)
         # print("CV: ",CadenaVector[count])
