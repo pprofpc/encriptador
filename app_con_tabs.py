@@ -1,4 +1,7 @@
-from tkinter import *
+from tkinter import Tk
+from tkinter import StringVar, Label, Button, Entry, TRUE, FALSE, E
+from archivo import Archivo
+
 from cifrar import *
 
 from tkinter import filedialog
@@ -14,41 +17,13 @@ mostrarDato = StringVar()
 estadoArchivo = StringVar()
 estadoArchivo.set("Cargar archivo")
 
-class Archivo:
-    nombre = ""
-    ruta = ""
-    completo = ""
-
-    def setNombre(self, nombre):
-        self.nombre = nombre
-    
-    def setRuta(self, ruta):
-        self.ruta = ruta
-
-    def getRuta(self):
-        return self.ruta
-    
-    def getNombre(self):
-        return self.nombre
-
-    def setCompleto(self, completo):
-        self.completo = completo
-
-    def getCompleto(self):
-        """Devuelve ruta completa y nombre de archivo"""
-        return self.completo
-
-    def getOk(self):
-        """Devuelve si el archivo existe"""
-        if (len(self.getCompleto())>0):
-            return TRUE
-        else:
-            return FALSE
 
 archivoLeer = Archivo()
 
 def setDato():
     mostrarDato.set("Clave: "+text2ASCII(password.get()))
+    if archivoLeer.getOk():
+        archivoLeer.setDataEncriptada(password.get())
 
 def abrir_archivo():
     ruta_app = os.path.abspath("./")
@@ -56,6 +31,7 @@ def abrir_archivo():
     archivoLeer.setCompleto(archivo_abierto.name)
     if archivoLeer.getOk():
         estadoArchivo.set("Archivo Cargado")
+        
 
 
 
