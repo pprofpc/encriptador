@@ -1,5 +1,6 @@
 from tkinter import Tk
-from tkinter import StringVar, Label, Button, Entry, TRUE, FALSE, E
+from tkinter import StringVar, Label, Button, Entry, E
+from tkinter import messagebox as Messagebox
 from archivo import Archivo
 
 from cifrar import *
@@ -20,11 +21,19 @@ estadoArchivo.set("Cargar archivo")
 
 archivoLeer = Archivo()
 
+#Lógica del Botón Encriptar
 def setDato():
     mostrarDato.set("Clave: "+text2ASCII(password.get()))
-    if archivoLeer.getOk():
+    if archivoLeer.getOk()&(len(password.get())>0):
         archivoLeer.setDataEncriptada(password.get())
+        if archivoLeer.isEncrypted():
+            Messagebox.showinfo("Info", "Datos encriptados!")
+        else:
+            Messagebox.showerror("Error", "Algo salió mal!")
+    else:
+        Messagebox.showwarning("Error", "Falta introducir una clave!")
 
+#Lógica de la apertura del archivo
 def abrir_archivo():
     ruta_app = os.path.abspath("./")
     archivo_abierto = filedialog.askopenfile(initialdir=ruta_app, title= "Seleccionar archivo",filetypes = (("txt","*.txt"),("all files","*.*")))
@@ -65,6 +74,8 @@ txbPassword.grid(row=3, column=1)
 
 lblBanderaPassword = Label(tab1, textvariable=mostrarDato)
 lblBanderaPassword.grid(row=4, column=0, columnspan=2)
+
+#Botón Encriptar
 
 btnAceptar = Button(tab1, text="Encriptar", command=setDato)
 btnAceptar.grid(row=5, column=1, sticky=E)
