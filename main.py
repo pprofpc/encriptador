@@ -12,7 +12,7 @@ import os
 
 from tkinter import ttk
 
-
+#----Variables del sistema----
 window = Tk()
 
 password = StringVar()
@@ -22,9 +22,11 @@ estadoArchivo.set("Cargar archivo")
 
 archivoLeer = Archivo()
 
+#-----Lógica del programa----
+
 #Lógica del Botón Encriptar
 def setDato():
-    mostrarDato.set("Clave: "+text2ASCII(password.get()))
+    mostrarDato.set("Datos encriptados, ya puede guardar")
     if archivoLeer.getOk()&(len(password.get())>0):
         archivoLeer.setDataEncriptada(password.get())
         if archivoLeer.isEncrypted():
@@ -39,10 +41,13 @@ def setDato():
 def abrir_archivo():
     ruta_app = os.path.abspath("./")
     archivo_abierto = filedialog.askopenfile(initialdir=ruta_app, title= "Seleccionar archivo",filetypes = (("TXT","*.txt"),("All Files","*.*")))
-    archivoLeer.setCompleto(archivo_abierto.name)
-    if archivoLeer.getOk():
-        estadoArchivo.set("Archivo Cargado")
-        btnEncriptar['state'] = 'normal'
+    if archivo_abierto is None:
+        Messagebox.showwarning("Atención", "Cancelo la operación!")
+    else:
+        archivoLeer.setCompleto(archivo_abierto.name)
+        if archivoLeer.getOk():
+            estadoArchivo.set("Archivo Cargado")
+            btnEncriptar['state'] = 'normal'
 
 #Lógica del Botón: Guardar datos encriptados
 def guardar_archivo():
@@ -51,18 +56,21 @@ def guardar_archivo():
              ('All Files', '*.*')]
     file = filedialog.asksaveasfile(initialdir=ruta_app, title="Guardar archivo",
                          filetypes=files, defaultextension=files)
-    if archivoLeer.isEncrypted():
-        size = archivoLeer.getLongitud()
-        i = 0
-        for n in archivoLeer.getDataEncriptada():
-            file.write(str(n))
-            if i < size-1:
-                file.write(",")
-            i += 1
-        file.close()
-        Messagebox.showinfo("Info", "Datos Guardados!")
+    if file is None:
+        Messagebox.showwarning("Atención","Cancelo la operación!")
+    else:
+        if archivoLeer.isEncrypted():
+            size = archivoLeer.getLongitud()
+            i = 0
+            for n in archivoLeer.getDataEncriptada():
+                file.write(str(n))
+                if i < size-1:
+                    file.write(",")
+                i += 1
+            file.close()
+            Messagebox.showinfo("Info", "Datos Guardados!")
 
-
+#----Geometría de la UI----
 window.title("Encriptador")
 window.geometry("365x250")
 
@@ -75,6 +83,8 @@ tab_control.add(tab1, text='Encriptar')
 tab2 = ttk.Frame(tab_control)
 
 tab_control.add(tab2, text='Desencriptar')
+
+#----Espacio de encriptado----
 
 lblSeparador = Label(tab1)
 lblSeparador.grid(column=0, row=0)
@@ -99,7 +109,7 @@ lblBanderaPassword.grid(row=4, column=0, columnspan=2)
 btnEncriptar = Button(tab1, text="Encriptar", command=setDato, state=DISABLED)
 btnEncriptar.grid(row=5, column=1, sticky=E, pady=10)
 
-#Espacio de guardado
+#----------Espacio de guardado--------------------
 
 lineaGuardar = ttk.Separator(tab1, orient='horizontal')
 #lineaGuardar.place(relx=0, rely=0.33, relwidth=1, relheight=1)
@@ -114,6 +124,7 @@ btnGuardar = Button(tab1, text="Guardar datos encriptados",
 
 btnGuardar.grid(row=9, columnspan=2, column=0, sticky=E)
 
+#----Empaquetado Final----
 
 tab_control.pack(expand=1, fill='both')
 
