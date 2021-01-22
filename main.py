@@ -1,11 +1,13 @@
 from tkinter import Tk
 from tkinter import StringVar, Label, Button, Entry, E, DISABLED
 from tkinter import messagebox as Messagebox
+from tkinter import *
 from archivo import Archivo
 
 from cifrar import *
 
 from tkinter import filedialog
+from tkinter import ttk
 import os
 
 from tkinter import ttk
@@ -17,7 +19,6 @@ password = StringVar()
 mostrarDato = StringVar()
 estadoArchivo = StringVar()
 estadoArchivo.set("Cargar archivo")
-
 
 archivoLeer = Archivo()
 
@@ -40,9 +41,24 @@ def abrir_archivo():
     archivoLeer.setCompleto(archivo_abierto.name)
     if archivoLeer.getOk():
         estadoArchivo.set("Archivo Cargado")
-        btnAceptar['state'] = 'normal'
+        btnEncriptar['state'] = 'normal'
         
-
+def guardar_archivo():
+    ruta_app = os.path.abspath("./")
+    files = [('All Files', '*.*'),
+             ('Text Document', '*.txt')]
+    file = filedialog.asksaveasfile(initialdir=ruta_app, title="Guardar archivo",
+                         filetypes=files, defaultextension=files)
+    if archivoLeer.isEncrypted():
+        size = archivoLeer.getLongitud()
+        i = 0
+        for n in archivoLeer.getDataEncriptada():
+            file.write(str(n))
+            if i < size-1:
+                file.write(",")
+            i += 1
+        file.close()
+        Messagebox.showinfo("Info", "Datos Guardados!")
 
 
 window.title("Encriptador")
@@ -78,11 +94,20 @@ lblBanderaPassword.grid(row=4, column=0, columnspan=2)
 
 #Botón Encriptar
 
-btnAceptar = Button(tab1, text="Encriptar", command=setDato, state=DISABLED)
-btnAceptar.grid(row=5, column=1, sticky=E)
+btnEncriptar = Button(tab1, text="Encriptar", command=setDato, state=DISABLED)
+btnEncriptar.grid(row=5, column=1, sticky=E, pady=10)
 
+#Espacio de guardado
 
+lineaGuardar = ttk.Separator(tab1, orient='horizontal')
+#lineaGuardar.place(relx=0, rely=0.33, relwidth=1, relheight=1)
+lineaGuardar.grid(row=7, column=0, columnspan=4, sticky='ew')
+lblSeparador2 = Label(tab1)
+lblSeparador2.grid(column=0, row=8)
 
+btnGuardar = Button(tab1, text="Guardar datos encriptados",
+                   command=guardar_archivo)
+btnGuardar.grid(row=9, columnspan=2, column=0, sticky=E)
 
 
 tab_control.pack(expand=1, fill='both')
