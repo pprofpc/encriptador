@@ -42,7 +42,7 @@ class Archivo:
         ln = ""
         for ln in original.readlines():
             count += 1
-            longitud = len(ln)
+
         original.close()
         self.__data = ln
         self.__dataEncriptada = integration(clave, self.__data)
@@ -52,3 +52,9 @@ class Archivo:
             return True
         else:
             return False
+
+    def getDataEncriptada(self):
+        return self.__dataEncriptada
+
+    def getLongitud(self):
+        return len(self.__dataEncriptada)
