@@ -29,6 +29,7 @@ def setDato():
         archivoLeer.setDataEncriptada(password.get())
         if archivoLeer.isEncrypted():
             Messagebox.showinfo("Info", "Datos encriptados!")
+            btnGuardar['state'] = 'normal'
         else:
             Messagebox.showerror("Error", "Algo salió mal!")
     else:
@@ -37,16 +38,17 @@ def setDato():
 #Lógica de la apertura del archivo
 def abrir_archivo():
     ruta_app = os.path.abspath("./")
-    archivo_abierto = filedialog.askopenfile(initialdir=ruta_app, title= "Seleccionar archivo",filetypes = (("txt","*.txt"),("all files","*.*")))
+    archivo_abierto = filedialog.askopenfile(initialdir=ruta_app, title= "Seleccionar archivo",filetypes = (("TXT","*.txt"),("All Files","*.*")))
     archivoLeer.setCompleto(archivo_abierto.name)
     if archivoLeer.getOk():
         estadoArchivo.set("Archivo Cargado")
         btnEncriptar['state'] = 'normal'
-        
+
+#Lógica del Botón: Guardar datos encriptados
 def guardar_archivo():
     ruta_app = os.path.abspath("./")
-    files = [('All Files', '*.*'),
-             ('Text Document', '*.txt')]
+    files = [('TXT', '*.txt'),
+             ('All Files', '*.*')]
     file = filedialog.asksaveasfile(initialdir=ruta_app, title="Guardar archivo",
                          filetypes=files, defaultextension=files)
     if archivoLeer.isEncrypted():
@@ -62,7 +64,7 @@ def guardar_archivo():
 
 
 window.title("Encriptador")
-window.geometry("700x450")
+window.geometry("365x250")
 
 tab_control = ttk.Notebook(window)
 
@@ -105,8 +107,11 @@ lineaGuardar.grid(row=7, column=0, columnspan=4, sticky='ew')
 lblSeparador2 = Label(tab1)
 lblSeparador2.grid(column=0, row=8)
 
+#Botón Guardar
 btnGuardar = Button(tab1, text="Guardar datos encriptados",
-                   command=guardar_archivo)
+                   command=guardar_archivo,
+                    state=DISABLED)
+
 btnGuardar.grid(row=9, columnspan=2, column=0, sticky=E)
 
 
