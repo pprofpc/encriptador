@@ -28,7 +28,7 @@ mostrarDatoD = StringVar()
 estadoArchivoD = StringVar()
 estadoArchivoD.set("Cargar archivo")
 archivoLeerD = Archivo()
-#-----Lógica del programa----
+#-----Lógica del programa-----
 
 #Lógica del Botón Encriptar
 def setDato():
@@ -80,6 +80,7 @@ def guardar_archivo():
 
 
 def setDatoD():
+    #falta desarrollar
     return True
 
 
