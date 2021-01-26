@@ -1,4 +1,6 @@
 from cifrar import integration
+from decifrar import ConvertTextInVector, CrearNuevaClave, Decifrar
+
 
 
 class Archivo:
@@ -53,8 +55,34 @@ class Archivo:
         else:
             return False
 
+    def isDesencrypted(self):
+        if len(self.__data) > 0:
+            return True
+        else:
+            return False
+
     def getDataEncriptada(self):
         return self.__dataEncriptada
 
     def getLongitud(self):
         return len(self.__dataEncriptada)
+    
+    def setDataDesencriptada(self, clave):
+        """Desencripta el archivo con la clave introducida"""
+        original = open(self.getCompleto(), 'r')
+        count = 0
+        ln = ""
+        for ln in original.readlines():
+            count += 1
+
+        original.close()
+        self.__dataEncriptada = ln
+        lnVector = ConvertTextInVector(ln)
+        claveVector = CrearNuevaClave(clave, lnVector)
+        self.__data = Decifrar(claveVector, lnVector)
+        print(self.__data)
+    
+    def getData(self):
+        return self.__data
+
+

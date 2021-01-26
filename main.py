@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from tkinter import Tk
 from tkinter import StringVar, Label, Button, Entry, E, DISABLED
 from tkinter import messagebox as Messagebox
@@ -32,11 +34,11 @@ archivoLeerD = Archivo()
 
 #Lógica del Botón Encriptar
 def setDato():
-    mostrarDato.set("Datos encriptados, ya puede guardar")
     if archivoLeer.getOk()&(len(password.get())>0):
         archivoLeer.setDataEncriptada(password.get())
         if archivoLeer.isEncrypted():
             Messagebox.showinfo("Info", "Datos encriptados!")
+            mostrarDato.set("Datos encriptados, ya puede guardar")
             btnGuardar['state'] = 'normal'
         else:
             Messagebox.showerror("Error", "Algo salió mal!")
@@ -79,9 +81,17 @@ def guardar_archivo():
 #----Lógica de la pestaña Desencriptar
 
 
-def setDatoD():
-    #falta desarrollar
-    return True
+def setDatoDesencriptado():
+    if archivoLeerD.getOk() & (len(passwordD.get()) > 0):
+        archivoLeerD.setDataDesencriptada(passwordD.get())
+        if archivoLeerD.isDesencrypted():
+            Messagebox.showinfo("Info", "Datos desencriptados!")
+            mostrarDatoD.set("Datos desencriptados, ya puede guardar")
+            btnGuardarD['state'] = 'normal'
+        else:
+            Messagebox.showerror("Error", "Algo salió mal!")
+    else:
+        Messagebox.showwarning("Error", "Falta introducir una clave!")
 
 
 def abrir_archivoD():
@@ -97,7 +107,19 @@ def abrir_archivoD():
 
 
 def guardar_archivoD():
-    return True
+    ruta_app = os.path.abspath("./")
+    files = [('TXT', '*.txt'),
+             ('All Files', '*.*')]
+    file = filedialog.asksaveasfile(initialdir=ruta_app, title="Guardar archivo",
+                         filetypes=files, defaultextension=files)
+    if file is None:
+        Messagebox.showwarning("Atención","Cancelo la operación!")
+    else:
+        if archivoLeerD.isDesencrypted():
+            for n in archivoLeerD.getData():
+                file.write(str(n))
+            file.close()
+            Messagebox.showinfo("Info", "Datos Guardados!")
 
 #----Geometría de la UI----
 window.title("Encriptador")
@@ -174,9 +196,10 @@ txbPasswordD.grid(row=3, column=1)
 lblBanderaPasswordD = Label(tab2, textvariable=mostrarDatoD)
 lblBanderaPasswordD.grid(row=4, column=0, columnspan=2)
 
-#Botón Encriptar
+#Botón Desencriptar
 
-btnDesencriptar = Button(tab2, text="Desencriptar", command=setDatoD, state=DISABLED)
+btnDesencriptar = Button(tab2, text="Desencriptar",
+                         command=setDatoDesencriptado, state=DISABLED)
 btnDesencriptar.grid(row=5, column=1, sticky=E, pady=10)
 
 #----------Espacio de guardado--------------------
