@@ -80,7 +80,6 @@ class Archivo:
         lnVector = ConvertTextInVector(ln)
         claveVector = CrearNuevaClave(clave, lnVector)
         self.__data = Decifrar(claveVector, lnVector)
-        print(self.__data)
     
     def getData(self):
         return self.__data
